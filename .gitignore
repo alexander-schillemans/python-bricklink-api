@@ -1,0 +1,9 @@
+bricklink/tests/
+tests/
+bricklink/__pycache__/
+__pycache__/
+bricklink/cache/*
+!bricklink/cache/__init__.py
+dist/
+Pipfile.lock
+python_bricklink_api.egg-info/*
