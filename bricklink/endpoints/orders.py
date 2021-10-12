@@ -7,12 +7,13 @@ class OrderMethods(APIEndpoint):
     def __init__(self, api):
         super(OrderMethods, self).__init__(api, "orders")
 
-    def list(self, direction="in", status=None, filled=False):
+    def list(self, direction="in", status=[], filled=False):
         url = self.endpoint
         data = {}
 
         if direction: data['direction'] = direction
-        if status: data['status'] = status
+        if len(status) > 0:
+            data['status'] = ",".join(status)
         if filled: data['filled'] = filled
 
         status, headers, respJson = self.api.get(url, data)
