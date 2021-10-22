@@ -28,7 +28,8 @@ class Order(BaseModel):
         payment=None,
         shipping=None,
         cost=None,
-        disp_cost=None
+        disp_cost=None,
+        order_items=None
     ):
 
         super().__init__()
@@ -54,6 +55,7 @@ class Order(BaseModel):
         self.shipping = shipping if shipping else Shipping()
         self.cost = cost if cost else Cost()
         self.disp_cost = disp_cost if disp_cost else Cost()
+        self.order_items = order_items if order_items else OrderItemList()
 
 class Payment(BaseModel):
 
@@ -152,6 +154,29 @@ class Name(BaseModel):
         self.full = full
         self.first = first
         self.last = last
+
+class OrderItemList(ObjectListModel):
+
+    def __init__(self):
+        super().__init__(list=[], listObject=OrderItem)
+    
+    def parse(self, json):
+
+        if isinstance(json, dict):
+            itemObj = self.listObject().parse(json)
+            self.add(itemObj)
+        elif isinstance(json, list):
+            for item in json:
+
+                if isinstance(item, list):
+                    for subItem in item:
+                        itemObj = self.listObject().parse(subItem)
+                        self.add(itemObj)
+                else:
+                    itemObj = self.listObject().parse(item)
+                    self.add(itemObj)
+
+        return self
 
 class OrderItem(BaseModel):
 

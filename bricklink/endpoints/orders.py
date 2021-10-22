@@ -1,6 +1,6 @@
 from .base import APIEndpoint
 
-from bricklink.models.orders import Order, OrderList
+from bricklink.models.orders import Order, OrderList, OrderItemList, OrderItem
 
 class OrderMethods(APIEndpoint):
 
@@ -22,7 +22,7 @@ class OrderMethods(APIEndpoint):
 
         return OrderList().parse(respJson['data'])
 
-    def get(self, id):
+    def get(self, id, withItems=False):
 
         url = '{endpoint}/{id}'.format(endpoint=self.endpoint, id=id)
         data = None
@@ -30,8 +30,31 @@ class OrderMethods(APIEndpoint):
         status, headers, respJson = self.api.get(url, data)
         internalStatusCode = respJson['meta']['code']
         if internalStatusCode in [400, 401, 403, 404, 405, 415, 422]: return Order().parseError(respJson['meta'])
+        order = Order().parse(respJson['data'])
 
-        return Order().parse(respJson['data'])
+        if withItems:
+            url = '{endpoint}/{id}/items'.format(endpoint=self.endpoint, id=id)
+            data = None
+
+            status, headers, respJson = self.api.get(url, data)
+            internalStatusCode = respJson['meta']['code']
+            if internalStatusCode in [400, 401, 403, 404, 405, 415, 422]: order_items = OrderItemList().parseError(respJson['meta'])
+            else: order_items = OrderItemList().parse(respJson['data'])
+
+            order.order_items = order_items
+        
+        return order
+    
+    def getItems(self, id):
+
+        url = '{endpoint}/{id}/items'.format(endpoint=self.endpoint, id=id)
+        data = None
+
+        status, headers, respJson = self.api.get(url, data)
+        internalStatusCode = respJson['meta']['code']
+        if internalStatusCode in [400, 401, 403, 404, 405, 415, 422]: return OrderItemList().parseError(respJson['meta'])
+        
+        return OrderItemList().parse(respJson['data'])
 
     def update(self,
         id,
