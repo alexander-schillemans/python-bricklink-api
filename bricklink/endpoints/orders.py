@@ -106,7 +106,7 @@ class OrderMethods(APIEndpoint):
         internalStatusCode = respJson['meta']['code']
         if internalStatusCode in [400, 401, 403, 404, 405, 415, 422]: return Order().parseError(respJson['meta'])
 
-        return Order().parse(respJson['data'])
+        return True
     
     def updateStatus(self, id, status):
 
@@ -117,7 +117,7 @@ class OrderMethods(APIEndpoint):
         internalStatusCode = respJson['meta']['code']
         if internalStatusCode in [400, 401, 403, 404, 405, 415, 422]: return Order().parseError(respJson['meta'])
 
-        return Order().parse(respJson['data'])
+        return True
     
     def updatePayment(self, id, status):
         url = '{endpoint}/{id}/status'.format(endpoint=self.endpoint, id=id)
@@ -127,4 +127,4 @@ class OrderMethods(APIEndpoint):
         internalStatusCode = respJson['meta']['code']
         if internalStatusCode in [400, 401, 403, 404, 405, 415, 422]: return Order().parseError(respJson['meta'])
 
-        return Order().parse(respJson['data'])
+        return True
