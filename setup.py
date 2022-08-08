@@ -9,7 +9,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 setup(
   name = 'python-bricklink-api',         
   packages=['bricklink', 'bricklink.models', 'bricklink.constants', 'bricklink.endpoints'],
-  version = '0.3.0',
+  version = '0.3.1',
   license='GPL-3.0-or-later',
   description = 'Wrapper for the Bricklink API (v1)',
   long_description=long_description,
@@ -17,7 +17,7 @@ setup(
   author = 'Alexander Schillemans',
   author_email = 'alexander.schillemans@lhs.global',
   url = 'https://github.com/alexanderlhsglobal/python-bricklink-api',
-  download_url = 'https://github.com/alexanderlhsglobal/python-bricklink-api/archive/refs/tags/0.3.0.tar.gz',
+  download_url = 'https://github.com/alexanderlhsglobal/python-bricklink-api/archive/refs/tags/0.3.1.tar.gz',
   keywords = ['bricklink', 'brick', 'link', 'brick link', 'lego', 'api'],
   install_requires=[
           'requests',
