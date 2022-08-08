@@ -29,12 +29,15 @@ class BrickLinkAPI:
 
     def doRequest(self, method, url, data=None, headers=None, files=None, auth=None):
 
-        if headers:
+        if headers is not None:
             mergedHeaders = self.headers
             mergedHeaders.update(headers)
             headers = mergedHeaders
-        else: headers = self.headers
+        else:
+            headers = self.headers
 
+        if url.startswith('http'):
+            raise('Invalid URL format, do not include base URL: {base}'.format(base=self.baseUrl))
         reqUrl = '{base}/{url}'.format(base=self.baseUrl, url=url)
 
         if method == 'GET':
@@ -61,15 +64,15 @@ class BrickLinkAPI:
     def get(self, url, data=None, headers=None):
         status, headers, response = self.request('GET', url, data, headers)
         return status, headers, response
-    
+
     def post(self, url, data=None, headers=None, files=None):
         status, headers, response = self.request('POST', url, data, headers, files)
         return status, headers, response
-    
+
     def put(self, url, data=None, headers=None):
         status, headers, response = self.request('PUT', url, data, headers)
         return status, headers, response
-    
+
     def delete(self, url, data=None, headers=None):
         status, headers, response = self.request('DELETE', url, data, headers)
         return status, headers, response
